@@ -51,7 +51,7 @@ const favoriteButton = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 50,
-    backgroundColor: 'blue',
+    backgroundColor: colors.graySoft,
     position: 'absolute',
     opacity: 0.7,
     top: 10,
