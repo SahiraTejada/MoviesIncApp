@@ -1,19 +1,20 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {colors} from '../theme/colors';
+import MovieCard from '../components/MovieCard';
 
 const MovieList = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Now playing</Text>
+      <MovieCard />
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.backgroundPrimary,
-    paddingHorizontal: 30,
+    gap: 30,
+    display:'flex',
   },
   title: {
     color: colors.white,
