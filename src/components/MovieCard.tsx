@@ -6,7 +6,7 @@ import {Movie} from '../types/movie';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import { MovieDetailsNavigationProp } from '../types/navigation';
+import {MovieDetailsNavigationProp} from '../types/navigation';
 
 interface MovieCardProps extends Movie {}
 
@@ -15,23 +15,25 @@ const MovieCard = ({
   title,
   rating,
   posterUrl,
-  ReleaseDate,
+  releaseDate: ReleaseDate,
   description,
   actors,
   genre,
 }: MovieCardProps) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
-   const handlePress = () => {
-     navigation.navigate('MovieDetails', {
-       movieId,
-       title,
-       posterUrl,
-       description,
-       actors,
-       genre,
-     });
-   };
+  const handlePress = () => {
+    navigation.navigate('MovieDetails', {
+      movieId,
+      title,
+      posterUrl,
+      description,
+      actors,
+      genre,
+      rating,
+      releaseDate: ReleaseDate,
+    });
+  };
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.movieContainer}>

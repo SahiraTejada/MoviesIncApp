@@ -12,10 +12,10 @@ const MovieList = () => {
       title={item.title}
       rating={item.rating}
       posterUrl={item.posterUrl}
-      ReleaseDate={item.ReleaseDate}
-       actors={item.actors}
-       description={item.description}
-       genre={item.genre}
+      releaseDate={item.releaseDate}
+      actors={item.actors}
+      description={item.description}
+      genre={item.genre}
     />
   );
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     gap: 30,
     display: 'flex',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   title: {
