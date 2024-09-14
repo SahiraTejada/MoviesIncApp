@@ -1,29 +1,23 @@
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import ActionButton from '../components/ActionButton';
-import {colors} from '../theme/colors';
-import {RootStackParamList} from '../types/navigation';
-import {borders} from '../theme/borders';
+import ActorDetails from '../components/ActorDetails';
+import GradientButton from '../components/GenreButton';
+import { colors } from '../theme/colors';
+import { RootStackParamList } from '../types/navigation';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
 const MovieDetails = () => {
   const navigation = useNavigation();
   const route = useRoute<MovieDetailsRouteProp>();
-  const {
-    movieId,
-    title,
-    posterUrl,
-    description,
-    genre, // Suponemos que genre es un array de cadenas
-    rating,
-    actors,
-    releaseDate,
-  } = route.params;
+  const {title, posterUrl, description, genre, rating, actors, releaseDate} =
+    route.params;
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -72,6 +66,7 @@ const MovieDetails = () => {
             <IconAntDesign name="star" size={15} color={colors.yellow} />
             <Text style={styles.infoText}>{rating}</Text>
           </View>
+          <IconEntypo name="dot-single" size={10} color={colors.white} />
           <Text style={styles.infoText}>{releaseDate}</Text>
         </View>
         <View style={styles.line} />
@@ -79,27 +74,30 @@ const MovieDetails = () => {
           <Text style={styles.subTitle}>Genre</Text>
           <View style={styles.genreContainer}>
             {genre.map((g, index) => (
-              <View key={index} style={styles.genreContent}>
-                <Text style={styles.genreText}>{g}</Text>
-              </View>
+              <GradientButton key={index} genre={g} />
             ))}
           </View>
         </View>
         <View style={styles.line} />
         <View>
           <Text style={styles.subTitle}>Description</Text>
-          <Text style={styles.genreText}>{description}</Text>
+          <Text style={styles.text}>{description}</Text>
         </View>
         <View style={styles.line} />
         <View>
           <Text style={styles.subTitle}>Cast</Text>
-          <View style={styles.genreContainer}>
-            {genre.map((g, index) => (
-              <View key={index} style={styles.genreContent}>
-                <Text style={styles.genreText}>{g}</Text>
-              </View>
-            ))}
-          </View>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={styles.genreContainer}>
+              {actors.map((a, index) => (
+                <ActorDetails
+                  key={index}
+                  name={a.name}
+                  character={a.character}
+                  photoUrl={a.photoUrl}
+                />
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -111,7 +109,8 @@ const styles = StyleSheet.create({
   line: {
     height: 1,
     backgroundColor: '#515151',
-    marginVertical: 28,
+    marginVertical: 20,
+    opacity: 0.4,
   },
   title: {
     color: colors.white,
@@ -121,16 +120,7 @@ const styles = StyleSheet.create({
   },
   genreContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 10,
-  },
-  genreContent: {
-    backgroundColor: '#201F28',
-    borderRadius: borders.radiusLarge,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   posterContainer: {
     position: 'relative',
@@ -172,7 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: 'medium',
     marginBottom: 10,
   },
-  genreText: {
+  text: {
     color: colors.gray,
     fontSize: 14,
   },
@@ -192,7 +182,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
+    gap: 10,
   },
 });
 
