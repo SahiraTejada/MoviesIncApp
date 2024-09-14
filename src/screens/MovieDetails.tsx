@@ -1,15 +1,16 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import ActionButton from '../components/ActionButton';
 import ActorDetails from '../components/ActorDetails';
+import ActionsModal from '../components/ActionsModal';
 import GradientButton from '../components/GenreButton';
-import { colors } from '../theme/colors';
-import { RootStackParamList } from '../types/navigation';
+import {colors} from '../theme/colors';
+import {RootStackParamList} from '../types/navigation';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
@@ -21,6 +22,11 @@ const MovieDetails = () => {
 
   const handleGoBack = () => {
     navigation.goBack();
+  };
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
+
+  const handleActions = () => {
+    setIsActionsOpen(!isActionsOpen);
   };
 
   return (
@@ -48,7 +54,7 @@ const MovieDetails = () => {
           <ActionButton
             height={50}
             width={50}
-            onPress={handleGoBack}
+            onPress={handleActions}
             Icon={
               <IconEntypo
                 name="dots-three-vertical"
@@ -100,6 +106,7 @@ const MovieDetails = () => {
           </ScrollView>
         </View>
       </View>
+      {isActionsOpen && <ActionsModal handleOpen={handleActions} />}
     </View>
   );
 };
