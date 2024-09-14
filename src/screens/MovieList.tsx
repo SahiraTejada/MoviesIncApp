@@ -2,16 +2,20 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../theme/colors';
 import MovieCard from '../components/MovieCard';
-import {Movie} from '../types/Movie';
+import {Movie} from '../types/movie';
 import {mockMovies} from '../data/mockMovies';
 
 const MovieList = () => {
   const renderItem = ({item}: {item: Movie}) => (
     <MovieCard
+      movieId={item.movieId}
       title={item.title}
       rating={item.rating}
       posterUrl={item.posterUrl}
       ReleaseDate={item.ReleaseDate}
+       actors={item.actors}
+       description={item.description}
+       genre={item.genre}
     />
   );
 
@@ -21,7 +25,7 @@ const MovieList = () => {
       <FlatList
         data={mockMovies}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.movieId.toString()}
         showsVerticalScrollIndicator={false}
       />
     </View>
