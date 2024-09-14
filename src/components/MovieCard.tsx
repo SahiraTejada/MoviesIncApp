@@ -13,7 +13,6 @@ const MovieCard = ({title, rating, posterUrl, ReleaseDate}: MovieCardProps) => {
     <View style={styles.movieContainer}>
       <View>
         <Image source={{uri: posterUrl}} style={styles.movieImage} />
-
         {/* Add this feature  (add favorite) later
          <TouchableOpacity   style={favoriteButton.circle}>
           <IconAntDesign name="hearto" size={20} color={colors.white} />
@@ -22,10 +21,10 @@ const MovieCard = ({title, rating, posterUrl, ReleaseDate}: MovieCardProps) => {
       <Text style={styles.movieTitle}>{title}</Text>
       <View style={info.container}>
         <View style={info.ratingContent}>
-          <IconAntDesign name="star" size={20} color={colors.yellow} />
+          <IconAntDesign name="star" size={15} color={colors.yellow} />
           <Text style={info.text}>{rating}</Text>
         </View>
-        <IconEntypo name="dot-single" size={3} color={colors.white} />
+        <IconEntypo name="dot-single" size={10} color={colors.white} />
         <Text style={info.text}>{ReleaseDate}</Text>
       </View>
     </View>
@@ -35,13 +34,13 @@ const MovieCard = ({title, rating, posterUrl, ReleaseDate}: MovieCardProps) => {
 const styles = StyleSheet.create({
   movieContainer: {
     position: 'relative',
-    marginVertical: 10,
+    marginBottom: 32,
   },
   movieImage: {
     width: '100%',
     borderRadius: borders.radiusMedium,
     height: 158,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   movieTitle: {
     color: colors.white,
@@ -68,19 +67,20 @@ const info = StyleSheet.create({
     color: colors.grayLigth,
     fontSize: 12,
     fontWeight: '400',
-    paddingTop: 8,
   },
   container: {
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    rowGap: 10,
+    flexDirection: 'row',
+    gap: 5,
+    marginTop: 3,
   },
   ratingContent: {
-    rowGap: 4,
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: 5,
   },
 });
 export default MovieCard;
