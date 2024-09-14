@@ -7,7 +7,7 @@ import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import ActionButton from '../components/ActionButton';
 import ActorDetails from '../components/ActorDetails';
-import ActionsModal from '../components/ActionsModal';
+import ActionsBottom from '../components/ActionsBottom';
 import GradientButton from '../components/GenreButton';
 import {colors} from '../theme/colors';
 import {RootStackParamList} from '../types/navigation';
@@ -106,7 +106,7 @@ const MovieDetails = () => {
           </ScrollView>
         </View>
       </View>
-      {isActionsOpen && <ActionsModal handleOpen={handleActions} />}
+      {isActionsOpen && <ActionsBottom handleOpen={handleActions} />}
     </View>
   );
 };

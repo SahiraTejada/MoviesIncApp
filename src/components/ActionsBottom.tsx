@@ -2,29 +2,39 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import {colors} from '../theme/colors';
-import {ActionsModalProps} from '../types/actions-modal';
+import {ActionsBottomProps} from '../types/actions-bottom';
+import ReviewModal from './ReviewModal';
 
-const ActionsModal = ({handleOpen: handleBottomSheet}: ActionsModalProps) => {
+const ActionsBottom = ({handleOpen}: ActionsBottomProps) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const handleReviewModal = () => {
-    setIsReviewModalOpen(false);
+    setIsReviewModalOpen(!isReviewModalOpen);
   };
+
   return (
     <View style={styles.overlay}>
-      <View style={styles.container}>
-        <View style={styles.actionsContainer}>
-          <TouchableOpacity onPress={handleBottomSheet}>
-            <IconAntDesign name="close" size={15} color={colors.white} />
-          </TouchableOpacity>
+      {!isReviewModalOpen && (
+        <View style={styles.container}>
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity onPress={handleOpen}>
+              <IconAntDesign name="close" size={15} color={colors.white} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.optionsContainer}>
+            <TouchableOpacity
+              style={styles.options}
+              onPress={handleReviewModal}>
+              <IconAntDesign name="staro" size={20} color={colors.white} />
+              <Text style={styles.text}>Add review movie</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.optionsContainer}>
-          <TouchableOpacity style={styles.options}>
-            <IconAntDesign name="staro" size={20} color={colors.white} />
-            <Text style={styles.text}>Add review movie</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      )}
+      <ReviewModal
+        handleReviewModal={handleReviewModal}
+        isReviewModalOpen={isReviewModalOpen}
+      />
     </View>
   );
 };
@@ -70,4 +80,4 @@ const styles = StyleSheet.create({
     fontWeight: 'medium',
   },
 });
-export default ActionsModal;
+export default ActionsBottom;
