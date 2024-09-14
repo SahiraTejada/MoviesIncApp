@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
   container: {
     gap: 30,
     display: 'flex',
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
   title: {
     color: colors.white,
