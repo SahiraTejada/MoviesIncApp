@@ -172,7 +172,7 @@ const MovieDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colors.black},
+  container: {flex: 1},
   line: {
     height: 1,
     backgroundColor: '#515151',
