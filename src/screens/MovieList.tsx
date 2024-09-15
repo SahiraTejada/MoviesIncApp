@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
-import MovieCard from '../components/MovieCard';
-import {getNowPlayingMovies} from '../services/getNowPlayingMovies';
-import {colors} from '../theme/colors';
-import {Movie} from '../types/movie';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createGuestSession} from '../services/createGuestSession';
 import Loader from '../components/Loader';
+import MovieCard from '../components/MovieCard';
+import { createGuestSession } from '../services/createGuestSession';
+import { getNowPlayingMovies } from '../services/getNowPlayingMovies';
+import { colors } from '../theme/colors';
+import { Movie } from '../types/movie';
 
 const MovieList = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);

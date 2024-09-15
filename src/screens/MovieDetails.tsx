@@ -16,6 +16,7 @@ import {getMovieCastDetails} from '../services/getMovieCastDetails';
 import {formatDate} from '../utils/date.utils';
 import {roundToFixed} from '../utils/number.utils';
 import Loader from '../components/Loader';
+import MoviesRecommended from '../components/MoviesRecommended';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
@@ -38,7 +39,7 @@ const MovieDetails = () => {
   };
 
   const fetchMovieInfo = async () => {
-  setLoading(true)
+    setLoading(true);
     try {
       const movie = await getMovieDetails(movieId);
       setMovieDetails(movie);
@@ -46,15 +47,14 @@ const MovieDetails = () => {
       setMovieCastDetails(cast);
     } catch (error) {
       console.error('Error fetching movie info:', error);
-    } finally{
-        setLoading(false);
-
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchMovieInfo();
-  }, [ ]);
+  }, [movieId]);
 
   if (!movieDetails || loading) {
     return <Loader />;
@@ -98,7 +98,7 @@ const MovieDetails = () => {
           />
         </View>
       </View>
-      <View style={styles.detailsContainer}>
+      <ScrollView style={styles.detailsContainer}>
         <Text style={styles.title}>{movieDetails.title}</Text>
         <View style={styles.infoContainer}>
           <View style={styles.ratingContent}>
@@ -152,7 +152,14 @@ const MovieDetails = () => {
             </View>
           )}
         </View>
-      </View>
+        <View style={styles.line} />
+        <View>
+          <View style={styles.subTitle}>
+            <Text style={styles.subTitle}>Recommended Movies</Text>
+            <MoviesRecommended movieId={movieId} />
+          </View>
+        </View>
+      </ScrollView>
       {isActionsOpen && (
         <ActionsBottom
           handleOpen={handleActions}
