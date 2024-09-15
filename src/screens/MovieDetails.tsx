@@ -1,5 +1,5 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,28 +11,58 @@ import ActionsBottom from '../components/ActionsBottom';
 import GradientButton from '../components/GenreButton';
 import {colors} from '../theme/colors';
 import {RootStackParamList} from '../types/navigation';
+import {getMovieDetails} from '../services/getMovieDetails';
+import {getMovieCastDetails} from '../services/getMovieCastDetails';
+import {formatDate} from '../utils/date.utils';
+import {roundToFixed} from '../utils/number.utils';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
 const MovieDetails = () => {
   const navigation = useNavigation();
   const route = useRoute<MovieDetailsRouteProp>();
-  const {title, posterUrl, description, genre, rating, actors, releaseDate} =
-    route.params;
+  const {movieId} = route.params;
 
   const handleGoBack = () => {
     navigation.goBack();
   };
+
   const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [movieDetails, setMovieDetails] = useState<any | null>(null);
+  const [movieCastDetails, setMovieCastDetails] = useState<any[]>([]);
 
   const handleActions = () => {
     setIsActionsOpen(!isActionsOpen);
   };
 
+  const fetchMovieInfo = async (movieId: number) => {
+    try {
+      const movie = await getMovieDetails(movieId);
+      setMovieDetails(movie);
+      const cast = await getMovieCastDetails(movieId);
+      setMovieCastDetails(cast);
+    } catch (error) {
+      console.error('Error fetching movie info:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovieInfo(movieId);
+  }, [movieId]);
+  if (!movieDetails) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.posterContainer}>
-        <ImageBackground style={styles.posterImage} source={{uri: posterUrl}}>
+        <ImageBackground
+          style={styles.posterImage}
+          source={{uri: movieDetails.posterUrl}}>
           <LinearGradient
             colors={[
               'rgba(0,0,0,0.3)',
@@ -66,53 +96,67 @@ const MovieDetails = () => {
         </View>
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{movieDetails.title}</Text>
         <View style={styles.infoContainer}>
           <View style={styles.ratingContent}>
             <IconAntDesign name="star" size={15} color={colors.yellow} />
-            <Text style={styles.infoText}>{rating}</Text>
+            <Text style={styles.infoText}>
+              {roundToFixed(movieDetails.vote_average)}
+            </Text>
           </View>
           <IconEntypo name="dot-single" size={10} color={colors.white} />
-          <Text style={styles.infoText}>{releaseDate}</Text>
+          <Text style={styles.infoText}>
+            {formatDate(movieDetails.release_date)}
+          </Text>
         </View>
         <View style={styles.line} />
         <View>
           <Text style={styles.subTitle}>Genre</Text>
-          <View style={styles.genreContainer}>
-            {genre.map((g, index) => (
-              <GradientButton key={index} genre={g} />
-            ))}
-          </View>
-        </View>
-        <View style={styles.line} />
-        <View>
-          <Text style={styles.subTitle}>Description</Text>
-          <Text style={styles.text}>{description}</Text>
-        </View>
-        <View style={styles.line} />
-        <View>
-          <Text style={styles.subTitle}>Cast</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={styles.genreContainer}>
-              {actors.map((a, index) => (
-                <ActorDetails
-                  key={index}
-                  name={a.name}
-                  character={a.character}
-                  photoUrl={a.photoUrl}
-                />
+              {movieDetails.genres?.map((g: any, index: number) => (
+                <GradientButton key={index} genre={g.name} />
               ))}
             </View>
           </ScrollView>
         </View>
+        <View style={styles.line} />
+        <View>
+          <Text style={styles.subTitle}>Description</Text>
+          <Text style={styles.text}>{movieDetails.overview}</Text>
+        </View>
+        <View style={styles.line} />
+        <View>
+          {movieCastDetails.length > 0 && (
+            <View style={styles.subTitle}>
+              <Text style={styles.subTitle}>Cast</Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                <View style={styles.genreContainer}>
+                  {movieCastDetails.map((castMember, index) => (
+                    <ActorDetails
+                      key={index}
+                      name={castMember.name}
+                      character={castMember.character}
+                      photoUrl={castMember.profileUrl}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          )}
+        </View>
       </View>
-      {isActionsOpen && <ActionsBottom handleOpen={handleActions} />}
+      {isActionsOpen && (
+        <ActionsBottom handleOpen={handleActions} movieId={movieId} />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {flex: 1, backgroundColor: colors.black},
   line: {
     height: 1,
     backgroundColor: '#515151',
@@ -175,10 +219,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     color: colors.grayLigth,
-    fontSize: 16,
-  },
-  movieId: {
-    color: colors.white,
     fontSize: 16,
   },
   ratingContent: {

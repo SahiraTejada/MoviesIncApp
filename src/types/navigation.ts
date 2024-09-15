@@ -1,11 +1,11 @@
-import {StackNavigationProp} from '@react-navigation/stack';
-import { Movie } from './movie';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   MovieList: undefined;
-  MovieDetails: Movie
+  MovieDetails: {
+    movieId:number
+  }
 };
-
 
 export type MovieDetailsNavigationProp = StackNavigationProp<
   RootStackParamList,

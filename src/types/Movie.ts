@@ -1,12 +1,19 @@
 export type Movie = {
-  movieId: number;
+   adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
   title: string;
-  rating: number;
-  releaseDate: string;
-  posterUrl: string;
-  description: string;
-  actors: Actor[];
-  genre: string[];
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  posterUrl:string
 };
 
 export interface Actor {

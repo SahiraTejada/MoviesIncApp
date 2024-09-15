@@ -1,15 +1,25 @@
 import React, {useState} from 'react';
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import {colors} from '../theme/colors';
 import {ReviewModalProps} from '../types/review-modal';
 import LinearGradient from 'react-native-linear-gradient';
+import {addMovieRating} from '../services/addMovieRating';
 
 const ReviewModal = ({
   isReviewModalOpen,
   handleReviewModal,
+  movieId,
 }: ReviewModalProps) => {
   const [rating, setRating] = useState<number>(0);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleStarPress = (value: number) => {
     setRating(prevRating => {
@@ -19,6 +29,24 @@ const ReviewModal = ({
         return value;
       }
     });
+  };
+
+  const handleSubmitRating = async () => {
+    if (rating === 0) {
+      Alert.alert('Error', 'Please select a rating before submitting.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await addMovieRating(movieId, rating);
+      handleReviewModal();
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <Modal
@@ -51,8 +79,12 @@ const ReviewModal = ({
             <LinearGradient
               colors={colors.gradientPrimary}
               style={styles.closeButton}>
-              <TouchableOpacity onPress={handleReviewModal}>
-                <Text style={styles.closeButtonText}>Add review</Text>
+              <TouchableOpacity
+                onPress={handleSubmitRating}
+                disabled={isSubmitting}>
+                <Text style={styles.closeButtonText}>
+                  {isSubmitting ? 'Submitting...' : 'Add review'}
+                </Text>
               </TouchableOpacity>
             </LinearGradient>
           </View>

@@ -1,38 +1,35 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {colors} from '../theme/colors';
-import {borders} from '../theme/borders';
-import {Movie} from '../types/movie';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
-import {useNavigation} from '@react-navigation/native';
-import {MovieDetailsNavigationProp} from '../types/navigation';
+import { borders } from '../theme/borders';
+import { colors } from '../theme/colors';
+import { MovieDetailsNavigationProp } from '../types/navigation';
+import { getYearFromDate } from '../utils/date.utils';
+import { roundToFixed } from '../utils/number.utils';
 
-interface MovieCardProps extends Movie {}
+interface MovieCardProps {
+  movieId: number;
+  title:string
+  rating:number;
+  posterUrl:string;
+  releaseDate: string;
+}
 
 const MovieCard = ({
   movieId,
   title,
   rating,
   posterUrl,
-  releaseDate: ReleaseDate,
-  description,
-  actors,
-  genre,
+  releaseDate
 }: MovieCardProps) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   const handlePress = () => {
-    navigation.navigate('MovieDetails', {
+     navigation.navigate('MovieDetails', {
       movieId,
-      title,
-      posterUrl,
-      description,
-      actors,
-      genre,
-      rating,
-      releaseDate: ReleaseDate,
-    });
+    }); 
   };
 
   return (
@@ -49,10 +46,10 @@ const MovieCard = ({
         <View style={info.container}>
           <View style={info.ratingContent}>
             <IconAntDesign name="star" size={15} color={colors.yellow} />
-            <Text style={info.text}>{rating}</Text>
+            <Text style={info.text}>{roundToFixed(rating)}</Text>
           </View>
           <IconEntypo name="dot-single" size={10} color={colors.white} />
-          <Text style={info.text}>{ReleaseDate}</Text>
+          <Text style={info.text}>{getYearFromDate(releaseDate)}</Text>
         </View>
       </View>
     </TouchableOpacity>
