@@ -59,6 +59,7 @@ const MovieDetails = () => {
   if (isLoading || !movie) {
     return <Loader />;
   }
+  console.log(cast, 'cast');
   return (
     <View style={styles.container}>
       <View style={styles.posterWrapper}>

@@ -62,9 +62,10 @@ const MoviesRecommended = ({movieId}: {movieId: number}) => {
                 style={styles.movieImage}
               />
               <View style={styles.movieInfo}>
-                <Text style={styles.movieTitle}>{movie.title}</Text>
-                <Text style={styles.movieYear}>
-                  ({getYearFromDate(movie.release_date)})
+                <Text style={[styles.movieTitle,styles.movietext]}>
+                  {movie.title}  <Text style={styles.movieYear}>
+                    ({getYearFromDate(movie.release_date)})
+                  </Text>
                 </Text>
               </View>
             </View>
@@ -87,10 +88,11 @@ const styles = StyleSheet.create({
   },
   movieContainer: {
     marginRight: 15,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    width: 150,
   },
   movieImage: {
-    width: 150,
+    width: '100%',
     height: 130,
     borderRadius: 10,
   },
@@ -98,11 +100,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     width: '100%',
+    marginTop: 5,
+  },
+  movietext: {
+    lineHeight: 22,
+    overflow: 'hidden',
+    maxHeight: 44,
   },
   movieTitle: {
     fontSize: 14,
     color: colors.white,
-    marginTop: 5,
   },
   movieYear: {
     fontSize: 12,

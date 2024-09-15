@@ -1,5 +1,7 @@
 import apiClient from '../config';
-import {getImage} from '../utils/getImage';
+import { DEFAULT_PROFILE_IMAGE } from '../utils/constants';
+import { getImage} from '../utils/getImage';
+
 
 export const getMovieCastDetails = async (id: number) => {
   try {
@@ -8,7 +10,9 @@ export const getMovieCastDetails = async (id: number) => {
 
     return cast.map((member: any) => ({
       ...member,
-      profileUrl: getImage('w500', member.profile_path),
+      profileUrl: member.profile_path
+        ? getImage('w500', member.profile_path)
+        : DEFAULT_PROFILE_IMAGE,
     }));
   } catch (error) {
     console.error('Error fetching movie cast details:', error);

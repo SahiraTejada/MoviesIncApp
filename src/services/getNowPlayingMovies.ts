@@ -1,4 +1,5 @@
 import apiClient from '../config';
+import {DEFAULT_POSTER_IMAGE} from '../utils/constants';
 import {getImage} from '../utils/getImage';
 
 export const getNowPlayingMovies = async () => {
@@ -8,7 +9,9 @@ export const getNowPlayingMovies = async () => {
 
     const updatedMovies = movies.map((movie: any) => ({
       ...movie,
-      posterUrl: getImage('w500', movie.poster_path),
+      posterUrl: movie.poster_path
+        ? getImage('w500', movie.poster_path)
+        : DEFAULT_POSTER_IMAGE,
     }));
 
     return updatedMovies;

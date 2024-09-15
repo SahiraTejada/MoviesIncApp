@@ -1,4 +1,5 @@
 import apiClient from '../config';
+import {DEFAULT_POSTER_IMAGE} from '../utils/constants';
 import {getImage} from '../utils/getImage';
 
 export const getMovieRecommendations = async (id: number) => {
@@ -10,7 +11,7 @@ export const getMovieRecommendations = async (id: number) => {
       ...movie,
       posterUrl: movie.poster_path
         ? getImage('w500', movie.poster_path)
-        : 'https://uning.es/wp-content/uploads/2016/08/ef3-placeholder-image.jpg',
+        : DEFAULT_POSTER_IMAGE,
     }));
 
     return moviesWithPosters;
