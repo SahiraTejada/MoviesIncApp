@@ -1,7 +1,7 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import StackNavigator from './src/navigation/StackNavigator';
+import TabNavigator from './src/navigation/TabNavigator';
 import { colors } from './src/theme/colors';
 
 const MyTheme = {
@@ -22,7 +22,7 @@ const App = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <NavigationContainer theme={MyTheme}>
-        <StackNavigator />
+        <TabNavigator />
       </NavigationContainer>
     </SafeAreaView>
   );
