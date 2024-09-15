@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActionButtonProps } from '../types/action-button';
+import { colors } from '../theme/colors';
 
 const ActionButton = ({
   onPress,
@@ -11,7 +12,7 @@ const ActionButton = ({
   return (
     <View>
       <TouchableOpacity
-        style={[styles.button, {width, height, borderRadius: width / 2}]}
+        style={[styles.buttonStyle, {width, height, borderRadius: width / 2}]}
         onPress={onPress}>
         {Icon}
       </TouchableOpacity>
@@ -20,11 +21,12 @@ const ActionButton = ({
 };
 
 const styles = StyleSheet.create({
-  button: {
+  buttonStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(26, 26, 29, 0.8)',
+    backgroundColor: colors.overlayColor1,
   },
 });
+
 
 export default ActionButton;

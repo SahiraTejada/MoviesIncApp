@@ -1,111 +1,82 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
-import { borders } from '../theme/borders';
-import { colors } from '../theme/colors';
-import { MovieDetailsNavigationProp } from '../types/navigation';
-import { getYearFromDate } from '../utils/date.utils';
-import { roundToFixed } from '../utils/number.utils';
-
-interface MovieCardProps {
-  movieId: number;
-  title:string
-  rating:number;
-  posterUrl:string;
-  releaseDate: string;
-}
+import {useNavigation} from '@react-navigation/native';
+import {colors} from '../theme/colors';
+import {MovieDetailsNavigationProp} from '../types/navigation';
+import {getYearFromDate} from '../utils/date.utils';
+import {roundToFixed} from '../utils/number.utils';
+import { MovieCardProps } from '../types/movie';
 
 const MovieCard = ({
   movieId,
   title,
   rating,
   posterUrl,
-  releaseDate
+  releaseDate,
 }: MovieCardProps) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   const handlePress = () => {
-     navigation.navigate('MovieDetails', {
-      movieId,
-    }); 
+    navigation.navigate('MovieDetails', {movieId});
   };
 
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.movieContainer}>
-      <View style={styles.movieContainer}>
-        <View>
-          <Image source={{uri: posterUrl}} style={styles.movieImage} />
-          {/* Add this feature  (add favorite) later
-         <TouchableOpacity   style={favoriteButton.circle}>
-          <IconAntDesign name="hearto" size={20} color={colors.white} />
-        </TouchableOpacity > */}
+    <TouchableOpacity onPress={handlePress} style={styles.container}>
+      <View style={styles.imageWrapper}>
+        <Image source={{uri: posterUrl}} style={styles.image} />
+      </View>
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.info}>
+        <View style={styles.rating}>
+          <IconAntDesign name="star" size={15} color={colors.yellow} />
+          <Text style={styles.text}>{roundToFixed(rating)}</Text>
         </View>
-        <Text style={styles.movieTitle}>{title}</Text>
-        <View style={info.container}>
-          <View style={info.ratingContent}>
-            <IconAntDesign name="star" size={15} color={colors.yellow} />
-            <Text style={info.text}>{roundToFixed(rating)}</Text>
-          </View>
-          <IconEntypo name="dot-single" size={10} color={colors.white} />
-          <Text style={info.text}>{getYearFromDate(releaseDate)}</Text>
-        </View>
+        <IconEntypo name="dot-single" size={10} color={colors.white} />
+        <Text style={styles.text}>{getYearFromDate(releaseDate)}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  movieContainer: {
-    position: 'relative',
+  container: {
     marginBottom: 20,
   },
-  movieImage: {
+  imageWrapper: {
     width: '100%',
-    borderRadius: borders.radiusMedium,
-    height: 158,
+    height: 230,
+    borderRadius: 8,
+    overflow: 'hidden',
     marginBottom: 10,
   },
-  movieTitle: {
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  title: {
     color: colors.white,
     fontSize: 14,
     fontWeight: '500',
   },
-});
-
-/* const favoriteButton = StyleSheet.create({
-  circle: {
-    width: 35,
-    height: 35,
-    borderRadius: 50,
-    backgroundColor: colors.graySoft,
-    position: 'absolute',
-    opacity: 0.7,
-    top: 10,
-    right: 10,
+  info: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 3,
   },
-}); */
-
-const info = StyleSheet.create({
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
   text: {
     color: colors.grayLigth,
     fontSize: 12,
     fontWeight: '400',
   },
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 5,
-    marginTop: 3,
-  },
-  ratingContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 5,
-  },
 });
+
 export default MovieCard;

@@ -1,48 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import { getMovieRecommendations } from '../services/getMovieRecommendations';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import {getMovieRecommendations} from '../services/getMovieRecommendations';
 import Loader from './Loader';
-import { useNavigation } from '@react-navigation/native';
-import { MovieDetailsNavigationProp } from '../types/navigation';
-import { getYearFromDate } from '../utils/date.utils';
-import { colors } from '../theme/colors';
+import {useNavigation} from '@react-navigation/native';
+import {MovieDetailsNavigationProp} from '../types/navigation';
+import {getYearFromDate} from '../utils/date.utils';
+import {colors} from '../theme/colors';
+import {Movie} from '../types/movie';
 
 const MoviesRecommended = ({movieId}: {movieId: number}) => {
-  const [movieRecommendation, setMovieRecommendation] = useState<any | null>(
+  const [recommendedMovies, setRecommendedMovies] = useState<Movie[] | null>(
     null,
   );
+
   const [loading, setLoading] = useState<boolean>(true);
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-   const handlePress = (selectedMovieId: number) => {
-     navigation.navigate('MovieDetails', {
-       movieId: selectedMovieId, 
-     });
-   };
+  const handlePress = (selectedMovieId: number) => {
+    navigation.navigate('MovieDetails', {
+      movieId: selectedMovieId,
+    });
+  };
 
-  const fetchMovieInfo = async () => {
+  const fetchRecommendedMovies = async () => {
     setLoading(true);
     try {
-      const movie = await getMovieRecommendations(movieId);
-      setMovieRecommendation(movie);
+      const movies = await getMovieRecommendations(movieId);
+      setRecommendedMovies(movies);
     } catch (error) {
-      console.error('Error fetching movie info:', error);
+      console.error('Error fetching movie recommendations:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMovieInfo();
+    fetchRecommendedMovies();
   }, []);
 
-  if (!movieRecommendation || loading) {
+  if (loading || !recommendedMovies) {
     return <Loader />;
   }
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {movieRecommendation.map(movie => (
+        {recommendedMovies.map(movie => (
           <TouchableOpacity
             key={movie.id}
             onPress={() => handlePress(movie.id)}>
@@ -84,10 +94,10 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 10,
   },
-  movieInfo:{
-    display:'flex',
-    alignItems:'flex-start',
-    width:'100%',
+  movieInfo: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    width: '100%',
   },
   movieTitle: {
     fontSize: 14,

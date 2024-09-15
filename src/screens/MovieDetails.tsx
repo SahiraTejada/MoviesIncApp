@@ -1,4 +1,5 @@
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -6,49 +7,40 @@ import LinearGradient from 'react-native-linear-gradient';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import ActionButton from '../components/ActionButton';
-import ActorDetails from '../components/ActorDetails';
 import ActionsBottom from '../components/ActionsBottom';
+import ActorDetails from '../components/ActorDetails';
 import GenreButton from '../components/GenreButton';
-import {colors} from '../theme/colors';
-import {RootStackParamList} from '../types/navigation';
-import {getMovieDetails} from '../services/getMovieDetails';
-import {getMovieCastDetails} from '../services/getMovieCastDetails';
-import {formatDate} from '../utils/date.utils';
-import {roundToFixed} from '../utils/number.utils';
 import Loader from '../components/Loader';
 import MoviesRecommended from '../components/MoviesRecommended';
-
-type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
+import {getMovieCastDetails} from '../services/getMovieCastDetails';
+import {getMovieDetails} from '../services/getMovieDetails';
+import {colors} from '../theme/colors';
+import {MovieDetailsRouteProp} from '../types/navigation';
+import {formatDate} from '../utils/date.utils';
+import {roundToFixed} from '../utils/number.utils';
+import {Actor, Movie} from '../types/movie';
 
 const MovieDetails = () => {
   const navigation = useNavigation();
   const route = useRoute<MovieDetailsRouteProp>();
   const {movieId} = route.params;
 
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
-  const [isActionsOpen, setIsActionsOpen] = useState(false);
-  const [movieDetails, setMovieDetails] = useState<any | null>(null);
-  const [movieCastDetails, setMovieCastDetails] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const handleActions = () => {
-    setIsActionsOpen(!isActionsOpen);
-  };
+  const [isActionsVisible, setIsActionsVisible] = useState(false);
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [cast, setCast] = useState<Actor[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchMovieInfo = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
-      const movie = await getMovieDetails(movieId);
-      setMovieDetails(movie);
-      const cast = await getMovieCastDetails(movieId);
-      setMovieCastDetails(cast);
+      const movieData = await getMovieDetails(movieId);
+      const castData = await getMovieCastDetails(movieId);
+      setMovie(movieData);
+      setCast(castData);
     } catch (error) {
-      console.error('Error fetching movie info:', error);
+      console.error('Error fetching movie data:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -56,38 +48,40 @@ const MovieDetails = () => {
     fetchMovieInfo();
   }, [movieId]);
 
-  if (!movieDetails || loading) {
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const toggleActions = () => {
+    setIsActionsVisible(!isActionsVisible);
+  };
+
+  if (isLoading || !movie) {
     return <Loader />;
   }
-
   return (
     <View style={styles.container}>
-      <View style={styles.posterContainer}>
+      <View style={styles.posterWrapper}>
         <ImageBackground
           style={styles.posterImage}
-          source={{uri: movieDetails.posterUrl}}>
+          source={{uri: movie.posterUrl}}>
           <LinearGradient
-            colors={[
-              'rgba(0,0,0,0.3)',
-              'rgba(0,0,0,0)',
-              'rgba(0,0,0,0)',
-              'rgba(0,0,0,0.8)',
-            ]}
+            colors={colors.gradientOverlay}
             locations={[0, 0.29, 0.64, 1]}
-            style={styles.gradient}
+            style={styles.gradientOverlay}
           />
         </ImageBackground>
-        <View style={styles.actionButton}>
+        <View style={styles.actionButtons}>
           <ActionButton
             height={50}
             width={50}
-            onPress={handleGoBack}
+            onPress={handleBackPress}
             Icon={<IconAntDesign name="left" size={15} color={colors.white} />}
           />
           <ActionButton
             height={50}
             width={50}
-            onPress={handleActions}
+            onPress={toggleActions}
             Icon={
               <IconEntypo
                 name="dots-three-vertical"
@@ -98,53 +92,51 @@ const MovieDetails = () => {
           />
         </View>
       </View>
-      <ScrollView style={styles.detailsContainer}>
-        <Text style={styles.title}>{movieDetails.title}</Text>
-        <View style={styles.infoContainer}>
-          <View style={styles.ratingContent}>
+      <ScrollView style={styles.detailsWrapper}>
+        <Text style={styles.movieTitle}>{movie.title}</Text>
+        <View style={styles.ratingWrapper}>
+          <View style={styles.ratingInfo}>
             <IconAntDesign name="star" size={15} color={colors.yellow} />
-            <Text style={styles.infoText}>
-              {roundToFixed(movieDetails.vote_average)}
+            <Text style={styles.ratingText}>
+              {roundToFixed(movie.vote_average)}
             </Text>
           </View>
           <IconEntypo name="dot-single" size={10} color={colors.white} />
-          <Text style={styles.infoText}>
-            {formatDate(movieDetails.release_date)}
+          <Text style={styles.releaseDateText}>
+            {formatDate(movie.release_date)}
           </Text>
         </View>
-        <View style={styles.line} />
+        <View style={styles.separator} />
         <View>
-          <Text style={styles.subTitle}>Genre</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.genreContainer}>
-              {movieDetails.genres?.map((g: any, index: number) => (
-                <GenreButton key={index} genre={g.name} />
+          <Text style={styles.sectionTitle}>Genre</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.genreList}>
+              {movie.genres?.map((genre: any, index: number) => (
+                <GenreButton key={index} genre={genre.name} />
               ))}
             </View>
           </ScrollView>
         </View>
-        <View style={styles.line} />
+        <View style={styles.separator} />
         <View>
-          <Text style={styles.subTitle}>Description</Text>
-          <Text style={[styles.text, {lineHeight: 20}]}>
-            {movieDetails.overview}
+          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={[styles.descriptionText, {lineHeight: 20}]}>
+            {movie.overview}
           </Text>
         </View>
-        <View style={styles.line} />
+        <View style={styles.separator} />
         <View>
-          {movieCastDetails.length > 0 && (
-            <View style={styles.subTitle}>
-              <Text style={styles.subTitle}>Cast</Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                <View style={styles.genreContainer}>
-                  {movieCastDetails.map((castMember, index) => (
+          {cast.length > 0 && (
+            <View>
+              <Text style={styles.sectionTitle}>Cast</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.actorList}>
+                  {cast.map((actor, index) => (
                     <ActorDetails
                       key={index}
-                      name={castMember.name}
-                      character={castMember.character}
-                      photoUrl={castMember.profileUrl}
+                      name={actor.name}
+                      character={actor.character}
+                      profileUrl={actor.profileUrl}
                     />
                   ))}
                 </View>
@@ -152,17 +144,15 @@ const MovieDetails = () => {
             </View>
           )}
         </View>
-        <View style={styles.line} />
+        <View style={styles.separator} />
         <View>
-          <View style={styles.subTitle}>
-            <Text style={styles.subTitle}>Recommended Movies</Text>
-            <MoviesRecommended movieId={movieId} />
-          </View>
+          <Text style={styles.sectionTitle}>Recommended Movies</Text>
+          <MoviesRecommended movieId={movieId} />
         </View>
       </ScrollView>
-      {isActionsOpen && (
+      {isActionsVisible && (
         <ActionsBottom
-          handleOpen={handleActions}
+          handleOpen={toggleActions}
           movieId={movieId}
           fetchMovieInfo={fetchMovieInfo}
         />
@@ -172,43 +162,43 @@ const MovieDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  line: {
+  container: {flex: 1, paddingBottom: 20},
+  separator: {
     height: 1,
-    backgroundColor: '#515151',
+    backgroundColor: colors.grayDark,
     marginVertical: 20,
     opacity: 0.4,
   },
-  title: {
+  movieTitle: {
     color: colors.white,
     fontSize: 20,
     fontWeight: 'medium',
     marginBottom: 10,
   },
-  genreContainer: {
+  genreList: {
     flexDirection: 'row',
     gap: 10,
   },
-  posterContainer: {
+  posterWrapper: {
     position: 'relative',
     marginBottom: 20,
   },
-  detailsContainer: {
+  detailsWrapper: {
     paddingHorizontal: 20,
   },
-  actionButton: {
+  actionButtons: {
     position: 'absolute',
     top: 0,
     left: 0,
-    bottom: 0,
     right: 0,
+    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 9,
     paddingTop: 20,
   },
-  gradient: {
+  gradientOverlay: {
     height: '100%',
     width: '100%',
   },
@@ -217,34 +207,37 @@ const styles = StyleSheet.create({
     height: 345,
     resizeMode: 'cover',
   },
-  description: {
-    color: colors.white,
-    fontSize: 16,
+  descriptionText: {
+    color: colors.gray,
+    fontSize: 14,
     marginBottom: 10,
-    textAlign: 'center',
   },
-  subTitle: {
+  sectionTitle: {
     color: colors.white,
     fontSize: 18,
     fontWeight: 'medium',
     marginBottom: 10,
   },
-  text: {
-    color: colors.gray,
-    fontSize: 14,
-  },
-  infoText: {
+  ratingText: {
     color: colors.grayLigth,
     fontSize: 16,
   },
-  ratingContent: {
+  releaseDateText: {
+    color: colors.grayLigth,
+    fontSize: 16,
+  },
+  ratingWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  ratingInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
   },
-  infoContainer: {
+  actorList: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
   },
 });

@@ -15,8 +15,6 @@ export const addMovieRating = async (movieId: number, rating: number,guestSessio
         params,
       },
     );
-    console.log('response.data',response.data)
-
     return response.data;
   } catch (error) {
     console.error('Error adding movie rating:', error);

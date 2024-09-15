@@ -4,17 +4,17 @@ import {Actor} from '../types/movie';
 import {colors} from '../theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
 
-const ActorDetails = ({name, character, photoUrl}: Actor) => {
+const ActorDetails = ({name, character, profileUrl: photoUrl}: Actor) => {
   return (
     <View style={styles.container}>
       <LinearGradient
         colors={colors.gradientPrimary}
-        style={styles.gradientBorder}>
-        <Image source={{uri: photoUrl }} style={styles.profileImage} />
+        style={styles.gradientWrapper}>
+        <Image source={{uri: photoUrl}} style={styles.image} />
       </LinearGradient>
-      <View style={styles.textContainer}>
-        <Text style={styles.nameText}>{name}</Text>
-        <Text style={styles.subText}>{character}</Text>
+      <View style={styles.textWrapper}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.character}>{character}</Text>
       </View>
     </View>
   );
@@ -25,30 +25,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    marginRight:20,
+    marginRight: 20,
   },
-  gradientBorder: {
+  gradientWrapper: {
     width: 54,
     height: 54,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  profileImage: {
+  image: {
     width: 50,
     height: 50,
     borderWidth: 2,
     borderRadius: 50,
   },
-  textContainer: {
+  textWrapper: {
     marginLeft: 10,
   },
-  nameText: {
+  name: {
     color: colors.white,
     fontSize: 14,
-    fontWeight: 'medium',
+    fontWeight: '500',
   },
-  subText: {
+  character: {
     color: colors.gray,
     fontSize: 12,
   },

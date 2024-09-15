@@ -18,38 +18,32 @@ const ReviewModal = ({
   isReviewModalOpen,
   handleReviewModal,
   movieId,
-  fetchMovieInfo
+  fetchMovieInfo,
 }: ReviewModalProps) => {
   const [rating, setRating] = useState<number>(0);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleStarPress = (value: number) => {
-    setRating(prevRating => {
-      if (prevRating === value) {
-        return 0;
-      } else {
-        return value;
-      }
-    });
+  const toggleRating = (value: number) => {
+    setRating(prevRating => (prevRating === value ? 0 : value));
   };
 
-  const handleSubmitRating = async () => {
+  const submitRating = async () => {
     if (rating === 0) {
       Alert.alert('Error', 'Please select a rating before submitting.');
       return;
     }
 
-    setIsSubmitting(true);
-  const sessionId = (await AsyncStorage.getItem('sessionId')) || '';
+    setIsLoading(true);
+    const sessionId = (await AsyncStorage.getItem('sessionId')) || '';
 
     try {
       await addMovieRating(movieId, rating, sessionId);
-      fetchMovieInfo()
+      fetchMovieInfo();
       handleReviewModal();
     } catch (error) {
       console.error('Error submitting review:', error);
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -61,18 +55,18 @@ const ReviewModal = ({
       onRequestClose={handleReviewModal}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
+          <View style={styles.modalHeaderContainer}>
             <TouchableOpacity onPress={handleReviewModal}>
               <IconAntDesign name="close" size={20} color={colors.white} />
             </TouchableOpacity>
           </View>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Review</Text>
+          <View style={styles.modalBody}>
+            <Text style={styles.modalTitle}>Review</Text>
             <View style={styles.starsContainer}>
               {[1, 2, 3, 4, 5].map(value => (
                 <TouchableOpacity
                   key={value}
-                  onPress={() => handleStarPress(value)}>
+                  onPress={() => toggleRating(value)}>
                   <IconAntDesign
                     name={rating >= value ? 'star' : 'staro'}
                     size={30}
@@ -83,12 +77,10 @@ const ReviewModal = ({
             </View>
             <LinearGradient
               colors={colors.gradientPrimary}
-              style={styles.closeButton}>
-              <TouchableOpacity
-                onPress={handleSubmitRating}
-                disabled={isSubmitting}>
-                <Text style={styles.closeButtonText}>
-                  {isSubmitting ? 'Submitting...' : 'Add review'}
+              style={styles.submitButton}>
+              <TouchableOpacity onPress={submitRating} disabled={isLoading}>
+                <Text style={styles.submitButtonText}>
+                  {isLoading ? 'Submitting...' : 'Add review'}
                 </Text>
               </TouchableOpacity>
             </LinearGradient>
@@ -98,15 +90,14 @@ const ReviewModal = ({
     </Modal>
   );
 };
+
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  modalHeader: {
-    display: 'flex',
+  modalHeaderContainer: {
     alignItems: 'flex-end',
     width: '100%',
   },
@@ -116,14 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '80%',
   },
-  modalContent: {
+  modalBody: {
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'flex',
     gap: 20,
   },
-
-  modalText: {
+  modalTitle: {
     color: colors.white,
     fontSize: 20,
     fontWeight: 'medium',
@@ -133,21 +122,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     gap: 10,
   },
-  ratingText: {
-    color: colors.white,
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  closeButton: {
+  submitButton: {
     padding: 10,
     borderRadius: 8,
     width: '90%',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
   },
-  closeButtonText: {
+  submitButtonText: {
     color: colors.white,
     fontSize: 16,
     fontWeight: 'semibold',

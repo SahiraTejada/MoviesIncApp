@@ -1,4 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
 import MovieDetails from '../screens/MovieDetails';
 import MovieList from '../screens/MovieList';
 
@@ -18,4 +19,3 @@ const StackNavigator = () => {
 };
 
 export default StackNavigator;
-

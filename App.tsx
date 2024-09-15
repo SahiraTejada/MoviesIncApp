@@ -8,12 +8,12 @@ const MyTheme = {
   dark: false,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.white,
+    primary: colors.primary,
     background: colors.backgroundPrimary,
     card: colors.backgroundPrimary,
-    text: colors.gray,
-    border: 'rgb(199, 199, 204)',
-    notification: 'rgb(255, 69, 58)',
+    text: colors.white,
+    border: colors.grayLigth,
+    notification: colors.primary,
   },
 };
 
