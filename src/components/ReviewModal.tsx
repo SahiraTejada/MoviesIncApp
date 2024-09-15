@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   Modal,
@@ -10,15 +10,16 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
-import { addMovieRating } from '../services/addMovieRating';
-import { colors } from '../theme/colors';
-import { ReviewModalProps } from '../types/review-modal';
+import {addMovieRating} from '../services/addMovieRating';
+import {colors} from '../theme/colors';
+import {ReviewModalProps} from '../types/review-modal';
 
 const ReviewModal = ({
   isReviewModalOpen,
   handleReviewModal,
   movieId,
   fetchMovieInfo,
+  handleOpen,
 }: ReviewModalProps) => {
   const [rating, setRating] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,6 +41,7 @@ const ReviewModal = ({
       await addMovieRating(movieId, rating, sessionId);
       fetchMovieInfo();
       handleReviewModal();
+      handleOpen();
     } catch (error) {
       console.error('Error submitting review:', error);
     } finally {
@@ -77,8 +79,13 @@ const ReviewModal = ({
             </View>
             <LinearGradient
               colors={colors.gradientPrimary}
-              style={styles.submitButton}>
-              <TouchableOpacity onPress={submitRating} disabled={isLoading}>
+              style={[
+                styles.submitButton,
+                {opacity: isLoading || rating === 0 ? 0.5 : 1},
+              ]}>
+              <TouchableOpacity
+                onPress={submitRating}
+                disabled={isLoading || rating === 0}>
                 <Text style={styles.submitButtonText}>
                   {isLoading ? 'Submitting...' : 'Add review'}
                 </Text>
@@ -129,6 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    height: 50,
   },
   submitButtonText: {
     color: colors.white,

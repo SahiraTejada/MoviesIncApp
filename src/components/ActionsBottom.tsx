@@ -22,7 +22,7 @@ const ActionsBottom = ({
         <View style={styles.mainContainer}>
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity onPress={handleOpen}>
-              <IconAntDesign name="close" size={15} color={colors.white} />
+              <IconAntDesign name="close" size={20} color={colors.white} />
             </TouchableOpacity>
           </View>
           <View style={styles.reviewOptionsContainer}>
@@ -40,6 +40,7 @@ const ActionsBottom = ({
         isReviewModalOpen={isReviewModalOpen}
         movieId={movieId}
         fetchMovieInfo={fetchMovieInfo}
+        handleOpen={handleOpen}
       />
     </View>
   );
@@ -65,8 +66,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: colors.backgroundSecondary,
     width: '100%',
-    height: 130,
-    padding: 16,
+    height: 150,
+    padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },

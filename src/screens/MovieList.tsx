@@ -22,6 +22,7 @@ const MovieList: React.FC = () => {
         await AsyncStorage.setItem('sessionId', sessionId);
       } catch (fetchError) {
         setError('Failed to fetch now playing movies');
+        console.error('Error fetching movie list:', fetchError);
       } finally {
         setLoading(false);
       }
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
     gap: 30,
+    flex: 1,
   },
   title: {
     color: colors.white,

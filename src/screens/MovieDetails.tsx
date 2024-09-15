@@ -29,6 +29,7 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [cast, setCast] = useState<Actor[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchMovieInfo = async () => {
     setIsLoading(true);
@@ -37,8 +38,9 @@ const MovieDetails = () => {
       const castData = await getMovieCastDetails(movieId);
       setMovie(movieData);
       setCast(castData);
-    } catch (error) {
-      console.error('Error fetching movie data:', error);
+    } catch (fetchError) {
+      setError('Failed to fetch now playing movies');
+      console.error('Error fetching movie data:', fetchError);
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +61,13 @@ const MovieDetails = () => {
   if (isLoading || !movie) {
     return <Loader />;
   }
-  console.log(cast, 'cast');
+
+  if (error) {
+    return <Text style={styles.errorText}>{error}</Text>;
+  }
+  if (!isLoading && !movie) {
+    return <Text style={styles.noMoviesText}>No details available</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.posterWrapper}>
@@ -240,6 +248,16 @@ const styles = StyleSheet.create({
   actorList: {
     flexDirection: 'row',
     gap: 10,
+  },
+  errorText: {
+    color: colors.primary,
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  noMoviesText: {
+    color: colors.grayLigth,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

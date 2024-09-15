@@ -23,11 +23,6 @@ const MoviesRecommended = ({movieId}: {movieId: number}) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-  const handlePress = (selectedMovieId: number) => {
-    navigation.navigate('MovieDetails', {
-      movieId: selectedMovieId,
-    });
-  };
 
   const fetchRecommendedMovies = async () => {
     setLoading(true);
@@ -44,6 +39,12 @@ const MoviesRecommended = ({movieId}: {movieId: number}) => {
   useEffect(() => {
     fetchRecommendedMovies();
   }, []);
+
+  const handlePress = (selectedMovieId: number) => {
+    navigation.navigate('MovieDetails', {
+      movieId: selectedMovieId,
+    });
+  };
 
   if (loading || !recommendedMovies) {
     return <Loader />;
