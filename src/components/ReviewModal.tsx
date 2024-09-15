@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import {
   Alert,
   Modal,
@@ -7,16 +8,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import IconAntDesign from 'react-native-vector-icons/AntDesign';
-import {colors} from '../theme/colors';
-import {ReviewModalProps} from '../types/review-modal';
 import LinearGradient from 'react-native-linear-gradient';
-import {addMovieRating} from '../services/addMovieRating';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import { addMovieRating } from '../services/addMovieRating';
+import { colors } from '../theme/colors';
+import { ReviewModalProps } from '../types/review-modal';
 
 const ReviewModal = ({
   isReviewModalOpen,
   handleReviewModal,
   movieId,
+  fetchMovieInfo
 }: ReviewModalProps) => {
   const [rating, setRating] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -38,9 +40,11 @@ const ReviewModal = ({
     }
 
     setIsSubmitting(true);
+  const sessionId = (await AsyncStorage.getItem('sessionId')) || '';
 
     try {
-      await addMovieRating(movieId, rating);
+      await addMovieRating(movieId, rating, sessionId);
+      fetchMovieInfo()
       handleReviewModal();
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -48,6 +52,7 @@ const ReviewModal = ({
       setIsSubmitting(false);
     }
   };
+
   return (
     <Modal
       animationType="slide"

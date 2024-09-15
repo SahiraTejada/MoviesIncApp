@@ -1,31 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import MovieCard from '../components/MovieCard';
-import { getNowPlayingMovies } from '../services/getNowPlayingMovies';
-import { colors } from '../theme/colors';
-import { Movie } from '../types/movie';
+import {getNowPlayingMovies} from '../services/getNowPlayingMovies';
+import {colors} from '../theme/colors';
+import {Movie} from '../types/movie';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createGuestSession} from '../services/createGuestSession';
 
 const MovieList = () => {
-    const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-const fetchMovies = async () => {
-  try {
-    const movies = await getNowPlayingMovies();
-    setNowPlayingMovies(movies);
-  } catch (error) {
-    setError('Failed to fetch now playing movies');
-  } finally {
-    setLoading(false);
-  }
-};
-  useEffect(() => {
-    
+  const fetchMovies = async () => {
+    try {
+      const movies = await getNowPlayingMovies();
+      setNowPlayingMovies(movies);
+    } catch (error) {
+      setError('Failed to fetch now playing movies');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchSessionId = async () => {
+    try {
+      const response = await createGuestSession();
+      const id = response;
+      await AsyncStorage.setItem('sessionId', id);
+    } catch (error) {
+      console.error('Error fetching sessionId:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchMovies();
+    fetchSessionId();
   }, []);
 
-  console.log(nowPlayingMovies, 'nowPlayingMovies');
   if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>{error}</Text>;
 

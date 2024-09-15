@@ -35,7 +35,7 @@ const MovieDetails = () => {
     setIsActionsOpen(!isActionsOpen);
   };
 
-  const fetchMovieInfo = async (movieId: number) => {
+  const fetchMovieInfo = async () => {
     try {
       const movie = await getMovieDetails(movieId);
       setMovieDetails(movie);
@@ -47,8 +47,8 @@ const MovieDetails = () => {
   };
 
   useEffect(() => {
-    fetchMovieInfo(movieId);
-  }, [movieId]);
+    fetchMovieInfo();
+  }, [ ]);
   if (!movieDetails) {
     return (
       <View style={styles.container}>
@@ -101,7 +101,8 @@ const MovieDetails = () => {
           <View style={styles.ratingContent}>
             <IconAntDesign name="star" size={15} color={colors.yellow} />
             <Text style={styles.infoText}>
-              {roundToFixed(movieDetails.vote_average)}
+              {roundToFixed(movieDetails.vote_average)},
+              {movieDetails.vote_count}
             </Text>
           </View>
           <IconEntypo name="dot-single" size={10} color={colors.white} />
@@ -149,7 +150,11 @@ const MovieDetails = () => {
         </View>
       </View>
       {isActionsOpen && (
-        <ActionsBottom handleOpen={handleActions} movieId={movieId} />
+        <ActionsBottom
+          handleOpen={handleActions}
+          movieId={movieId}
+          fetchMovieInfo={fetchMovieInfo}
+        />
       )}
     </View>
   );

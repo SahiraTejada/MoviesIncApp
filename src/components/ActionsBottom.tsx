@@ -5,7 +5,7 @@ import {colors} from '../theme/colors';
 import {ActionsBottomProps} from '../types/actions-bottom';
 import ReviewModal from './ReviewModal';
 
-const ActionsBottom = ({handleOpen,movieId}: ActionsBottomProps) => {
+const ActionsBottom = ({handleOpen,movieId,fetchMovieInfo}: ActionsBottomProps) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const handleReviewModal = () => {
@@ -35,6 +35,7 @@ const ActionsBottom = ({handleOpen,movieId}: ActionsBottomProps) => {
         handleReviewModal={handleReviewModal}
         isReviewModalOpen={isReviewModalOpen}
         movieId={movieId}
+        fetchMovieInfo={fetchMovieInfo}
       />
     </View>
   );

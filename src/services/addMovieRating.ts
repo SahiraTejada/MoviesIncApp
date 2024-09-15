@@ -1,7 +1,10 @@
 import apiClient from '../config';
 
-export const addMovieRating = async (movieId: number, rating: number) => {
+export const addMovieRating = async (movieId: number, rating: number,guestSessionId:string) => {
   try {
+      const params: Record<string, string | undefined> = {
+      guest_session_id: guestSessionId,
+    };
     const response = await apiClient.post(
       `/movie/${movieId}/rating`,
       {value: rating},
@@ -9,8 +12,10 @@ export const addMovieRating = async (movieId: number, rating: number) => {
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
         },
+        params,
       },
     );
+    console.log('response.data',response.data)
 
     return response.data;
   } catch (error) {
