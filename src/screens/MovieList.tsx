@@ -12,6 +12,7 @@ import {colors} from '../theme/colors';
 import {Movie} from '../types/movie';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createGuestSession} from '../services/createGuestSession';
+import Loader from '../components/Loader';
 
 const MovieList = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
@@ -42,7 +43,7 @@ const MovieList = () => {
     fetchSessionId();
   }, []);
 
-  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  if (loading) return <Loader />;
   if (error) return <Text>{error}</Text>;
 
   const renderItem = ({item}: {item: Movie}) => (

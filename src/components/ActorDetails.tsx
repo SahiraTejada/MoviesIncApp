@@ -10,7 +10,7 @@ const ActorDetails = ({name, character, photoUrl}: Actor) => {
       <LinearGradient
         colors={colors.gradientPrimary}
         style={styles.gradientBorder}>
-        <Image source={{uri: photoUrl}} style={styles.profileImage} />
+        <Image source={{uri: photoUrl }} style={styles.profileImage} />
       </LinearGradient>
       <View style={styles.textContainer}>
         <Text style={styles.nameText}>{name}</Text>
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
+    marginRight:20,
   },
   gradientBorder: {
     width: 54,

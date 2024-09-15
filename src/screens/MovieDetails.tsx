@@ -8,13 +8,14 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import ActionButton from '../components/ActionButton';
 import ActorDetails from '../components/ActorDetails';
 import ActionsBottom from '../components/ActionsBottom';
-import GradientButton from '../components/GenreButton';
+import GenreButton from '../components/GenreButton';
 import {colors} from '../theme/colors';
 import {RootStackParamList} from '../types/navigation';
 import {getMovieDetails} from '../services/getMovieDetails';
 import {getMovieCastDetails} from '../services/getMovieCastDetails';
 import {formatDate} from '../utils/date.utils';
 import {roundToFixed} from '../utils/number.utils';
+import Loader from '../components/Loader';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
@@ -30,12 +31,14 @@ const MovieDetails = () => {
   const [isActionsOpen, setIsActionsOpen] = useState(false);
   const [movieDetails, setMovieDetails] = useState<any | null>(null);
   const [movieCastDetails, setMovieCastDetails] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleActions = () => {
     setIsActionsOpen(!isActionsOpen);
   };
 
   const fetchMovieInfo = async () => {
+  setLoading(true)
     try {
       const movie = await getMovieDetails(movieId);
       setMovieDetails(movie);
@@ -43,18 +46,18 @@ const MovieDetails = () => {
       setMovieCastDetails(cast);
     } catch (error) {
       console.error('Error fetching movie info:', error);
+    } finally{
+        setLoading(false);
+
     }
   };
 
   useEffect(() => {
     fetchMovieInfo();
   }, [ ]);
-  if (!movieDetails) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Loading...</Text>
-      </View>
-    );
+
+  if (!movieDetails || loading) {
+    return <Loader />;
   }
 
   return (
@@ -101,8 +104,7 @@ const MovieDetails = () => {
           <View style={styles.ratingContent}>
             <IconAntDesign name="star" size={15} color={colors.yellow} />
             <Text style={styles.infoText}>
-              {roundToFixed(movieDetails.vote_average)},
-              {movieDetails.vote_count}
+              {roundToFixed(movieDetails.vote_average)}
             </Text>
           </View>
           <IconEntypo name="dot-single" size={10} color={colors.white} />
@@ -116,7 +118,7 @@ const MovieDetails = () => {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={styles.genreContainer}>
               {movieDetails.genres?.map((g: any, index: number) => (
-                <GradientButton key={index} genre={g.name} />
+                <GenreButton key={index} genre={g.name} />
               ))}
             </View>
           </ScrollView>
@@ -124,7 +126,9 @@ const MovieDetails = () => {
         <View style={styles.line} />
         <View>
           <Text style={styles.subTitle}>Description</Text>
-          <Text style={styles.text}>{movieDetails.overview}</Text>
+          <Text style={[styles.text, {lineHeight: 20}]}>
+            {movieDetails.overview}
+          </Text>
         </View>
         <View style={styles.line} />
         <View>
