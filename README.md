@@ -1,79 +1,68 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Movies Inc - React Native App
 
-# Getting Started
+Bienvenido al proyecto **Movies Inc**. A continuación, encontrarás las instrucciones para instalar y comenzar con el proyecto.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Funcionalidad del Proyecto
 
-## Step 1: Start the Metro Server
+**Movies Inc** es una aplicación móvil que permite a los clientes descubrir películas que puedan estar interesados en ver. La aplicación utiliza la API pública de [The Movie Database API](https://developer.themoviedb.org/docs/getting-started) para obtener información sobre películas.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+
+## Instalación y Configuración
+
+### Paso 1: Obtener una API Key
+
+Para utilizar la API de The Movie Database, necesitarás una API Key. Puedes obtenerla registrándote en el [sitio de desarrolladores de The Movie Database](https://www.themoviedb.org/documentation/api). Una vez que tengas tu API Key, guárdala en un archivo `.env` en la raíz de tu proyecto o configúrala en tu aplicación según las necesidades del proyecto.
+
+### Paso 2: Descargar Dependencias
+
+Antes de ejecutar la aplicación, necesitas instalar las dependencias del proyecto. Ejecuta el siguiente comando desde la raíz de tu proyecto:
 
 ```bash
-# using npm
+# usando npm
+npm install
+
+# O usando Yarn
+yarn install
+```
+
+### Paso 3: Iniciar el Servidor Metro
+Metro es el bundler de JavaScript que se incluye con React Native. Para iniciar Metro, ejecuta el siguiente comando desde la raíz de tu proyecto de React Native:
+
+```bash
+
+# usando npm
 npm start
 
-# OR using Yarn
+# O usando Yarn
 yarn start
 ```
+### Paso 4: Iniciar la Aplicación
+Deja que Metro Bundler se ejecute en su propia terminal. Abre una nueva terminal desde la raíz de tu proyecto de React Native y ejecuta el siguiente comando para iniciar tu aplicación en Android o iOS:
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+**Para Android**
 ```bash
-# using npm
+# usando npm
 npm run android
 
-# OR using Yarn
+# O usando Yarn
 yarn android
 ```
-
-### For iOS
-
+**Para iOS**
 ```bash
-# using npm
+
+# usando npm
 npm run ios
 
-# OR using Yarn
+# O usando Yarn
 yarn ios
 ```
+Si todo está configurado correctamente, deberías ver la aplicación de **Movies Inc** ejecutándose en el Emulador de Android o en el Simulador de iOS, siempre y cuando hayas configurado correctamente tu emulador/simulador.
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## ¡Felicidades! :tada:
+Has ejecutado con éxito la aplicación. :partying_face:
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
 
-Now that you have successfully run the app, let's modify it.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
