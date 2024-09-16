@@ -51,7 +51,7 @@ const MoviesRecommended = ({movieId}: {movieId: number}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {recommendedMovies.map(movie => (
           <TouchableOpacity
@@ -78,9 +78,6 @@ const MoviesRecommended = ({movieId}: {movieId: number}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-  },
   header: {
     fontSize: 18,
     fontWeight: 'bold',
