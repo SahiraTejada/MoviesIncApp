@@ -7,6 +7,11 @@ Bienvenido al proyecto **Movies Inc**. A continuación, encontrarás las instruc
 **Movies Inc** es una aplicación móvil que permite a los clientes descubrir películas que puedan estar interesados en ver. La aplicación utiliza la API pública de [The Movie Database API](https://developer.themoviedb.org/docs/getting-started) para obtener información sobre películas.
 
 
+## Capturas de pantalla
+
+| Lista de las películas                                                                                                                                                              | Detalles de la película                                                                                                                                                              | Añadir calificación |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| <img src="https://github.com/user-attachments/assets/8ee49b25-9712-4e67-b42a-42979004db94" width="340" height="530" alt="Descripción 1"> | <img src="https://github.com/user-attachments/assets/2b27f80b-b143-4e48-9300-dd6fe6fbe116"  width="340" height="530" alt="Descripción 2"> | <img src="https://github.com/user-attachments/assets/4eb6fc5a-d82c-49bf-8fd5-50c495211820"  width="340" height="530" alt="Descripción 3"> |
 
 ## Instalación y Configuración
 
@@ -16,7 +21,7 @@ Para utilizar la API de The Movie Database, necesitarás una API Key. Puedes obt
 
 ### Paso 2: Descargar Dependencias
 
-Antes de ejecutar la aplicación, necesitas instalar las dependencias del proyecto. Ejecuta el siguiente comando desde la raíz de tu proyecto:
+Antes de ejecutar la aplicación, necesitas instalar las dependencias del proyecto. Ejecuta el siguiente comando desde la raíz del proyecto:
 
 ```bash
 # usando npm
@@ -27,7 +32,7 @@ yarn install
 ```
 
 ### Paso 3: Iniciar el Servidor Metro
-Metro es el bundler de JavaScript que se incluye con React Native. Para iniciar Metro, ejecuta el siguiente comando desde la raíz de tu proyecto de React Native:
+Metro es el bundler de JavaScript que se incluye con React Native. Para iniciar Metro, ejecuta el siguiente comando desde la raíz del proyecto de React Native:
 
 ```bash
 
@@ -38,7 +43,7 @@ npm start
 yarn start
 ```
 ### Paso 4: Iniciar la Aplicación
-Deja que Metro Bundler se ejecute en su propia terminal. Abre una nueva terminal desde la raíz de tu proyecto de React Native y ejecuta el siguiente comando para iniciar tu aplicación en Android o iOS:
+Deja que Metro Bundler se ejecute en su propia terminal. Abre una nueva terminal desde la raíz del proyecto de React Native y ejecuta el siguiente comando para iniciar tu aplicación en Android o iOS:
 
 **Para Android**
 ```bash
