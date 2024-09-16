@@ -1,5 +1,5 @@
 import apiClient from '../config';
-import {DEFAULT_POSTER_IMAGE} from '../utils/constants';
+import {DEFAULT_POSTER_IMAGE} from '../constants/images';
 import {getImage} from '../utils/getImage';
 
 export const getMovieDetails = async (id: number) => {
