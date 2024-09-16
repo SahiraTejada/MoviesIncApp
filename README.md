@@ -12,7 +12,7 @@ Bienvenido al proyecto **Movies Inc**. A continuación, encontrarás las instruc
 
 ### Paso 1: Obtener una API Key
 
-Para utilizar la API de The Movie Database, necesitarás una API Key. Puedes obtenerla registrándote en el [sitio de desarrolladores de The Movie Database](https://www.themoviedb.org/documentation/api). Una vez que tengas tu API Key, guárdala en un archivo `.env` en la raíz de tu proyecto o configúrala en tu aplicación según las necesidades del proyecto.
+Para utilizar la API de The Movie Database, necesitarás una API Key. Puedes obtenerla registrándote en el [sitio de desarrolladores de The Movie Database](https://www.themoviedb.org/documentation/api). Una vez que tengas tu API Key, guárdala en un archivo `.env` en la raíz del proyecto.
 
 ### Paso 2: Descargar Dependencias
 
